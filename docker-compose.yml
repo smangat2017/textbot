@@ -1,0 +1,20 @@
+postgres:
+  container_name: postgres
+  image: postgres
+  environment:
+    - POSTGRES_USER=curious
+    - POSTGRES_PASSWORD=illenium
+    - POSTGRES_DB=george
+    - PGDATA=/var/lib/postgresql/data
+  volumes:
+    - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    - ./volumes/postgres:/var/lib/postgresql/data
+
+george:
+  build: .
+  ports:
+    - 3000:80
+  links:
+    - postgres
+  environment:
+    - POSTGRES_URL=postgres://curious:illenium@postgres:5432/george
